@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Dashboard - Distro Connect" />
+  <title>Dashboard – Distro Connect</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    body {
+      background: var(--bg-light);
+      padding: 20px;
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      background: var(--card);
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .user-info {
+      text-align: right;
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .user-status {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .card-stat {
+      background: var(--card);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-approved {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .activity-section {
+      background: var(--card);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .activity-section h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .activity-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-time {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .logout-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .user-info {
+        text-align: center;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="logo">📦 Distro Connect</div>
+      <div class="user-info">
+        <div class="user-name" id="userName">User</div>
+        <div class="user-status">Distributor Account</div>
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Statistics -->
+    <div class="dashboard-grid">
+      <div class="card-stat">
+        <div class="stat-label">Application Status</div>
+        <div class="stat-value">⏳</div>
+        <div class="status-badge status-pending">Under Review</div>
+      </div>
+
+      <div class="card-stat">
+        <div class="stat-label">Company Name</div>
+        <div class="stat-value" id="companyName" style="font-size: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Loading...</div>
+      </div>
+
+      <div class="card-stat">
+        <div class="stat-label">Documents Submitted</div>
+        <div class="stat-value">3</div>
+        <div style="font-size: 12px; color: #666; margin-top: 8px;">All files received</div>
+      </div>
+    </div>
+
+    <!-- Activity Section -->
+    <div class="activity-section">
+      <h2>Recent Activity</h2>
+
+      <div class="activity-item">
+        <span>Personal Information Submitted</span>
+        <span class="activity-time">Today, 10:30 AM</span>
+      </div>
+
+      <div class="activity-item">
+        <span>Company Details Completed</span>
+        <span class="activity-time">Today, 10:32 AM</span>
+      </div>
+
+      <div class="activity-item">
+        <span>Documents Uploaded Successfully</span>
+        <span class="activity-time">Today, 10:35 AM</span>
+      </div>
+
+      <div class="activity-item">
+        <span>Application Moved to Review Queue</span>
+        <span class="activity-time">Today, 10:36 AM</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/utils.js"></script>
+  <script>
+    // Load user data on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      const userLogin = Utils.getData("userLogin");
+      const companyInfo = Utils.getData("companyInfo");
+
+      if (userLogin) {
+        document.getElementById("userName").textContent = userLogin.name;
+      }
+
+      if (companyInfo) {
+        document.getElementById("companyName").textContent = companyInfo.company;
+      }
+    });
+
+    function logout() {
+      localStorage.clear();
+      Utils.navigate("index.html");
+    }
+  </script>
+</body>
+</html>

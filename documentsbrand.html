@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Compliance & Registration</title>
+  <style>
+    :root{--bg:#f7fafc;--card:#fff;--accent:#0ea5e9;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;color:#0f172a}
+    .card{width:100%;max-width:820px;background:var(--card);border-radius:12px;padding:22px;box-shadow:0 10px 30px rgba(2,6,23,0.06);border:1px solid rgba(15,23,42,0.04)}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{margin:0 0 18px;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    label{display:block;font-weight:600;margin-bottom:8px}
+    .input, select{width:100%;padding:10px;border:1px solid #dbe7f5;border-radius:8px;font-size:14px}
+    .file-row{display:flex;gap:10px;align-items:center}
+    .file-label{padding:8px 12px;border-radius:8px;background:#f1f9fe;border:1px dashed #bde8ff;cursor:pointer}
+    .file-info{font-size:13px;color:var(--muted)}
+    .full{grid-column:1 / -1}
+    .note{font-size:13px;color:var(--muted)}
+    .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:14px}
+    .btn{padding:10px 14px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+    .btn.primary{background:var(--accent);color:white}
+    .btn.ghost{background:transparent;border:1px solid #e6eef8}
+    .checkbox{display:flex;gap:8px;align-items:center}
+    .small{font-size:13px;color:var(--muted)}
+    @media (max-width:780px){.grid{grid-template-columns:1fr}.actions{justify-content:stretch}}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <h1>Compliance & Registration</h1>
+    <p class="lead">Provide your business registration and compliance documents. Accepted formats: PDF, PNG, JPG (max 10MB each).</p>
+
+    <form id="complianceForm" class="grid" novalidate>
+
+      <div class="full">
+        <label for="registrationType">Business registration</label>
+        <select id="registrationType" class="input" required>
+          <option value="">Select type</option>
+          <option value="proprietorship">Proprietorship</option>
+          <option value="llp">LLP</option>
+          <option value="pvt_ltd">Pvt Ltd</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="fssai">FSSAI license number</label>
+        <input id="fssai" class="input" type="text" placeholder="Enter FSSAI number (if any)" />
+        <div class="small">Optional for non-food businesses.</div>
+      </div>
+
+      <div>
+        <label for="gst">GST registration number (GSTIN)</label>
+        <input id="gst" class="input" type="text" maxlength="15" placeholder="22AAAAA0000A1Z5" />
+      </div>
+
+      <div>
+        <label for="tradeLicense">Trade license (upload)</label>
+        <div class="file-row">
+          <label for="tradeLicense" class="file-label">Choose file</label>
+          <div id="tradeLicenseName" class="file-info">No file chosen</div>
+        </div>
+        <input id="tradeLicense" type="file" accept="application/pdf,image/*" style="display:none" />
+      </div>
+
+      <div>
+        <label>Packaging & labelling compliance</label>
+        <div class="checkbox">
+          <input id="packagingYes" name="packaging" type="radio" value="yes" /> <label for="packagingYes">Compliant</label>
+        </div>
+        <div class="checkbox">
+          <input id="packagingNo" name="packaging" type="radio" value="no" /> <label for="packagingNo">Not compliant / pending</label>
+        </div>
+        <div class="small">You may upload packaging compliance reports below.</div>
+      </div>
+
+      <div>
+        <label for="packFile">Packaging compliance (upload)</label>
+        <div class="file-row">
+          <label for="packFile" class="file-label">Choose file</label>
+          <div id="packFileName" class="file-info">No file chosen</div>
+        </div>
+        <input id="packFile" type="file" accept="application/pdf,image/*" style="display:none" />
+      </div>
+
+      <div class="full">
+        <label for="trademark">Trademark (brand name) — registration number / upload</label>
+        <input id="trademark" class="input" type="text" placeholder="Enter trademark reg. number (if any)" />
+        <div style="margin-top:10px" class="file-row">
+          <label for="trademarkFile" class="file-label">Upload trademark certificate</label>
+          <div id="trademarkFileName" class="file-info">No file chosen</div>
+        </div>
+        <input id="trademarkFile" type="file" accept="application/pdf,image/*" style="display:none" />
+      </div>
+
+      <div class="full note">By submitting, you confirm the documents are accurate and you have authority to share them.</div>
+
+      <div class="full actions">
+        <button type="button" id="resetBtn" class="btn ghost">Reset</button>
+        <button type="submit" class="btn primary">Submit</button>
+      </div>
+
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('complianceForm');
+    const tradeInput = document.getElementById('tradeLicense');
+    const tradeName = document.getElementById('tradeLicenseName');
+    const packInput = document.getElementById('packFile');
+    const packName = document.getElementById('packFileName');
+    const tmInput = document.getElementById('trademarkFile');
+    const tmName = document.getElementById('trademarkFileName');
+
+    document.querySelectorAll('.file-label').forEach(lbl=>{
+      lbl.addEventListener('click', ()=>{ document.getElementById(lbl.getAttribute('for')).click(); });
+    });
+
+    tradeInput.addEventListener('change', ()=>{ tradeName.textContent = tradeInput.files.length ? tradeInput.files[0].name : 'No file chosen'; });
+    packInput.addEventListener('change', ()=>{ packName.textContent = packInput.files.length ? packInput.files[0].name : 'No file chosen'; });
+    tmInput.addEventListener('change', ()=>{ tmName.textContent = tmInput.files.length ? tmInput.files[0].name : 'No file chosen'; });
+
+    function validateGST(gstVal){
+      if(!gstVal) return true; // optional here
+      const re = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i;
+      return re.test(gstVal.trim());
+    }
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      // simple validation
+      const gst = document.getElementById('gst').value.trim();
+      const regType = document.getElementById('registrationType').value;
+      if(!regType){ window.location.href='waitpage.html'; return; }
+      if(gst && !validateGST(gst)){ window.location.href='waitpage.html'; return; }
+
+      // gather payload
+      const payload = {
+        registrationType: regType,
+        fssai: document.getElementById('fssai').value.trim() || null,
+        gst: gst || null,
+        tradeLicense: tradeInput.files[0] ? tradeInput.files[0].name : null,
+        packagingStatus: document.querySelector('input[name="packaging"]:checked') ? document.querySelector('input[name="packaging"]:checked').value : null,
+        packagingFile: packInput.files[0] ? packInput.files[0].name : null,
+        trademarkNumber: document.getElementById('trademark').value.trim() || null,
+        trademarkFile: tmInput.files[0] ? tmInput.files[0].name : null
+      };
+
+      // In a real app, send FormData via fetch. Here show success
+      window.location.href='waitpage.html';
+      form.reset(); tradeName.textContent='No file chosen'; packName.textContent='No file chosen'; tmName.textContent='No file chosen';
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', ()=>{ form.reset(); tradeName.textContent='No file chosen'; packName.textContent='No file chosen'; tmName.textContent='No file chosen'; });
+  </script>
+</body>
+</html>

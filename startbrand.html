@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Distro Connect – Welcome</title>
+  <style>
+    :root { --bg:#f8fafc; --card:#ffffff; --accent:#2563eb; --muted:#6b7280; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      font-family:Inter, Arial, sans-serif;
+      background:var(--bg);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      color:#0f172a;
+    }
+    .card {
+      background:var(--card);
+      width:100%;
+      max-width:600px;
+      padding:28px;
+      border-radius:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.07);
+      border:1px solid rgba(0,0,0,0.06);
+    }
+    h1 {
+      margin-top:0;
+      font-size:26px;
+      font-weight:700;
+    }
+    .input, select {
+      width:100%;
+      padding:12px;
+      border:1px solid #e2e8f0;
+      border-radius:10px;
+      font-size:15px;
+      margin-top:6px;
+    }
+    label {
+      font-weight:600;
+      margin-top:16px;
+      display:block;
+    }
+    .btn {
+      margin-top:20px;
+      padding:12px 18px;
+      border:0;
+      border-radius:10px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:700;
+      font-size:16px;
+      cursor:pointer;
+      width:100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Welcome to Distro Connect</h1>
+
+    <form>
+      
+
+      <label for="city">Choose the cities to start</label>
+      <select id="city" class="input">
+        <option value="">Select a city</option>
+        <option>Bangalore</option>
+        <option>Mumbai</option>
+        <option>Delhi</option>
+        <option>Hyderabad</option>
+        <option>Chennai</option>
+      </select>
+
+      <label for="volume">Choose the volume</label>
+      <select id="volume" class="input">
+        <option value="">Select volume</option>
+        <option>Low Volume</option>
+        <option>Medium Volume</option>
+        <option>High Volume</option>
+      </select>
+
+      <button type="button" onclick="window.location.href='optionbrand.html'" class="btn">Continue</button>
+    </form>
+  </div>
+</body>
+</html>

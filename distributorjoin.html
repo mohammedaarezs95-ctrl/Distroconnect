@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Company Information Form - Distro Connect" />
+  <title>Company Information – Distro Connect</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .form-card h2 {
+      margin: 0 0 24px 0;
+      font-size: 22px;
+      color: var(--primary);
+    }
+
+    label {
+      font-size: 14px;
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 16px;
+      transition: border 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-bottom: 12px;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-dark);
+    }
+
+    .next-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 12px;
+      padding: 12px 22px;
+      background: var(--success);
+      color: white;
+      border: none;
+      font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .next-btn:hover {
+      background: var(--success-dark);
+      transform: scale(1.02);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+    }
+
+    .alert {
+      margin-bottom: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: #065f46;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="form-card">
+    <h2>Company Information</h2>
+
+    <div id="successAlert" class="alert alert-success"></div>
+
+    <form id="companyForm">
+      <label for="company">Name of the Company</label>
+      <input
+        id="company"
+        type="text"
+        placeholder="Enter company name"
+        required
+      />
+
+      <label for="phone">Phone Number</label>
+      <input
+        id="phone"
+        type="tel"
+        placeholder="Enter phone number"
+        required
+      />
+
+      <label for="city">City</label>
+      <input
+        id="city"
+        type="text"
+        placeholder="Enter city"
+        required
+      />
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Submit</button>
+        <a href="distributorproof.html" class="next-btn">Next →</a>
+      </div>
+    </form>
+  </div>
+
+  <script src="assets/js/utils.js"></script>
+  <script>
+    const form = document.getElementById("companyForm");
+    const successAlert = document.getElementById("successAlert");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const company = Utils.getValue("company");
+      const phone = Utils.getValue("phone");
+      const city = Utils.getValue("city");
+
+      if (!company || !phone || !city) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      if (!Utils.isValidPhone(phone)) {
+        alert("Please enter a valid phone number.");
+        return;
+      }
+
+      const data = { company, phone, city };
+      Utils.storeData("companyInfo", data);
+
+      successAlert.style.display = "block";
+      successAlert.textContent = "✓ Company information saved: " + company;
+
+      setTimeout(() => {
+        successAlert.style.display = "none";
+      }, 3000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "distro-connect",
+  "version": "1.0.0",
+  "description": "Distributor onboarding and management platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8000",
+    "dev": "npx http-server -p 8000 -c-1",
+    "build": "echo 'Frontend application - no build step required'",
+    "lint": "echo 'Add ESLint configuration for linting'",
+    "test": "echo 'Add your test framework here'"
+  },
+  "keywords": [
+    "distributor",
+    "onboarding",
+    "b2b",
+    "platform"
+  ],
+  "author": "Distro Connect Team",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/distro-connect.git"
+  }
+}

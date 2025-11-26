@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Distro Connect - Distributor Onboarding Platform" />
+  <title>Distro Connect – Welcome</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .welcome-card {
+      background: var(--card);
+      width: 100%;
+      max-width: 600px;
+      padding: 40px 28px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .welcome-card h1 {
+      margin-bottom: 12px;
+      color: var(--primary);
+    }
+
+    .welcome-card p {
+      margin-bottom: 32px;
+      font-size: 16px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-group select {
+      margin-bottom: 0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button-group a {
+      flex: 1;
+      text-align: center;
+    }
+
+    .header-logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 480px) {
+      .welcome-card {
+        padding: 24px 16px;
+      }
+
+      .header-logo {
+        font-size: 24px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome-card">
+    <div class="header-logo">📦 Distro Connect</div>
+    <h1>Welcome</h1>
+    <p>Join our distributor network and start your journey with us today.</p>
+
+    <form id="welcomeForm">
+      <div class="form-group">
+        <label for="city">Choose the cities to start</label>
+        <select id="city" required>
+          <option value="">Select a city</option>
+          <option value="bangalore">Bangalore</option>
+          <option value="mumbai">Mumbai</option>
+          <option value="delhi">Delhi</option>
+          <option value="hyderabad">Hyderabad</option>
+          <option value="chennai">Chennai</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="volume">Choose the volume</label>
+        <select id="volume" required>
+          <option value="">Select volume</option>
+          <option value="low">Low Volume</option>
+          <option value="medium">Medium Volume</option>
+          <option value="high">High Volume</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <a href="loginui.html" class="btn btn-secondary">Sign In</a>
+        <button type="submit" class="btn btn-primary">Continue</button>
+      </div>
+    </form>
+
+    <p class="text-muted" style="font-size: 12px; margin-top: 24px;">
+      Need help? <a href="#" style="color: var(--primary); text-decoration: none;">Contact Support</a>
+    </p>
+  </div>
+
+  <script src="assets/js/utils.js"></script>
+  <script>
+    document.getElementById("welcomeForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const city = document.getElementById("city").value;
+      const volume = document.getElementById("volume").value;
+
+      if (city && volume) {
+        const data = { city, volume };
+        Utils.storeData("distributorPrefs", data);
+        Utils.navigate("optionbrand.html");
+      }
+    });
+  </script>
+</body>
+</html>

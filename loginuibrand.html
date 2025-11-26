@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — Name & Phone</title>
+  <style>
+    :root{
+      --bg:#0f172a;
+      --card:#0b1220;
+      --accent:#8b5cf6;
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#071129 0%, #081024 50%, #05202b 100%);
+      color:#e6eef8;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:100%;
+      max-width:420px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:28px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    h1{margin:0 0 8px 0;font-size:20px}
+    p.lead{margin:0 0 20px 0;color:var(--muted);font-size:14px}
+    label{display:block;font-size:13px;margin-bottom:6px;color:#cfe3ff}
+    .input{
+      width:100%;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.04);
+      background:var(--glass);
+      color:inherit;
+      font-size:15px;
+      outline:none;
+      transition: box-shadow .12s, border-color .12s, transform .05s;
+    }
+    .input:focus{box-shadow: 0 4px 18px rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.6);}
+    .row{display:grid;gap:12px;margin-bottom:14px}
+    .small{font-size:12px;color:var(--muted);margin-top:6px}
+    .btn{
+      width:100%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 14px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      background: linear-gradient(90deg,var(--accent), #06b6d4);
+      color:white;font-weight:600;font-size:15px;
+      box-shadow: 0 8px 24px rgba(11,9,31,0.6);
+    }
+    .error{color:#ffb4b4;background:rgba(255,40,40,0.06);padding:8px 10px;border-radius:8px;margin-top:8px;font-size:13px}
+    .success{color:#b6f0c6;background:rgba(34,197,94,0.06);padding:8px 10px;border-radius:8px;margin-top:8px;font-size:13px}
+    .meta{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+    .link{font-size:13px;color:var(--muted);text-decoration:underline;cursor:pointer}
+    @media (max-width:460px){.card{padding:18px}}
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <header>
+      <h1>Quick Login</h1>
+      <p class="lead">Enter your name and phone number to continue.
+      </p>
+    </header>
+
+    <form id="loginForm" novalidate>
+      <div class="row">
+        <div>
+          <label for="name">Full name</label>
+          <input id="name" name="name" class="input" type="text" autocomplete="name" placeholder="e.g. Arjun Rao" required aria-required="true" />
+          <div id="nameError" class="error" style="display:none"></div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" class="input" type="email" autocomplete="email" placeholder="you@example.com" required aria-required="true" />
+          <div id="emailError" class="error" style="display:none"></div>
+        </div>
+
+        </div>
+
+        <div>
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" class="input" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 9876543210" required aria-required="true" pattern="^\+?\d{7,15}$" />
+          <div id="phoneError" class="error" style="display:none"></div>
+          <div class="small">Allow + and digits only — 7 to 15 digits suggested.</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Sign in</button>
+
+      <div id="result" style="display:none"></div>
+
+      <div class="meta">
+        <div class="small">We will never share your data.</div>
+        <div class="link" id="demoFill">Demo</div>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const nameEl = document.getElementById('name');
+    const phoneEl = document.getElementById('phone');
+    const nameErr = document.getElementById('nameError');
+    
+    const emailEl = document.getElementById('email');
+    const emailErr = document.getElementById('emailError');
+const phoneErr = document.getElementById('phoneError');
+    const result = document.getElementById('result');
+    const demo = document.getElementById('demoFill');
+
+    function showError(el, msg){
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+    function clearError(el){
+      el.textContent = '';
+      el.style.display = 'none';
+    }
+
+    function validate(){
+      let ok = true;
+      const name = nameEl.value.trim();
+      const phone = phoneEl.value.trim();
+      const email = emailEl.value.trim();
+      clearError(emailErr);
+      if(!email){
+        showError(emailErr, 'Please enter your email.');
+        ok = false;
+      } else if(!/^\S+@\S+\.\S+$/.test(email)){
+        showError(emailErr, 'Enter a valid email address.');
+        ok = false;
+      }
+
+
+      clearError(nameErr);
+      clearError(phoneErr);
+      result.style.display = 'none';
+
+      if(!name){
+        showError(nameErr, 'Please enter your name.');
+        ok = false;
+      } else if(name.length < 2){
+        showError(nameErr, 'Name looks too short.');
+        ok = false;
+      }
+
+      const phoneRegex = /^\+?\d{7,15}$/;
+      if(!phone){
+        showError(phoneErr, 'Please enter a phone number.');
+        ok = false;
+      } else if(!phoneRegex.test(phone)){
+        showError(phoneErr, 'Phone must contain only digits and optional leading + (7–15 digits).');
+        ok = false;
+      }
+
+      return ok;
+    }
+
+    form.addEventListener('submit', (e)=>{ e.preventDefault(); if(!validate()) return; window.location.href='uploadpro.html'; });
+
+    demo.addEventListener('click', ()=>{
+      nameEl.value = 'Advaith PP';
+      phoneEl.value = '+919876543210';
+      clearError(nameErr); clearError(phoneErr);
+    });
+  </script>
+</body>
+</html>

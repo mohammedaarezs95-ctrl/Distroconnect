@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DistroConnect - B2B Marketplace</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --light: #f3f4f6;
+            --dark: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        /* Landing Page Modal Overlay */
+        #landing-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .landing-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .role-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn-biz { background-color: var(--primary); color: white; }
+        .btn-dist { background-color: #10b981; color: white; }
+        .role-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* Main App Interface (Hidden by default) */
+        #app-interface { display: none; }
+
+        header {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Search Section */
+        .search-hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        /* Distributor Cards */
+        .distributor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .badge {
+            background: #e0e7ff;
+            color: var(--secondary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .rating { color: #f59e0b; margin: 10px 0; }
+
+        .call-btn {
+            background-color: var(--dark);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .call-btn:hover { background-color: black; }
+
+        /* Mock Distributor Interface */
+        #distributor-view { display: none; text-align: center; padding: 50px; }
+
+    </style>
+</head>
+<body>
+
+    <div id="landing-overlay">
+        <div class="landing-card">
+            <h2>Welcome to DistroConnect</h2>
+            <p>Please select your role to continue</p>
+            <button class="role-btn btn-biz" onclick="selectRole('business')">I am a Business (Buyer)</button>
+            <button class="role-btn btn-dist" onclick="location.href='loginui.html'">I am a Distributor</button>
+        </div>
+    </div>
+
+    <div id="app-interface">
+        <header>
+            <h3>DistroConnect</h3>
+            <div>Logged in as: <strong>Business User</strong></div>
+        </header>
+
+        <div class="container">
+            <div class="search-hero">
+                <h1>Find Verified Distributors Near You</h1>
+                <p>Search by state or city to find stockists.</p>
+                
+                <div class="search-box">
+                    <select id="state-select">
+                        <option value="">Select State</option>
+                        <option value="California">California</option>
+                        <option value="Texas">Texas</option>
+                        <option value="New York">New York</option>
+                    </select>
+                    <input type="text" id="city-input" placeholder="Enter City (e.g., Austin)">
+                    <button class="role-btn btn-biz" style="width: auto; margin:0;" onclick="filterDistributors()">Search</button>
+                </div>
+            </div>
+
+            <div id="results-area" class="distributor-grid">
+                </div>
+        </div>
+    </div>
+
+    <div id="distributor-view">
+        <h1>Distributor Portal</h1>
+        <p>Please login to manage your inventory and incoming calls.</p>
+        <button class="role-btn btn-dist" style="width: 200px; margin: 0 auto;" onclick="location.reload()">Back</button>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+
+        // Mock Database of Distributors
+        const distributors = [
+            { id: 1, name: "Alpha Supplies Ltd", state: "California", city: "Los Angeles", rating: 4.8, category: "Electronics" },
+            { id: 2, name: "Lone Star Logistics", state: "Texas", city: "Austin", rating: 4.5, category: "FMCG" },
+            { id: 3, name: "Big Apple Wholesale", state: "New York", city: "New York", rating: 4.2, category: "Textiles" },
+            { id: 4, name: "Bay Area Foods", state: "California", city: "San Francisco", rating: 4.9, category: "Food & Bev" },
+            { id: 5, name: "Houston Heavy Goods", state: "Texas", city: "Houston", rating: 4.0, category: "Construction" }
+        ];
+
+        // 1. Handle Role Selection
+        function selectRole(role) {
+            document.getElementById('landing-overlay').style.display = 'none';
+            
+            if (role === 'business') {
+                document.getElementById('app-interface').style.display = 'block';
+                renderDistributors(distributors); // Show all initially
+            } else {
+                document.getElementById('distributor-view').style.display = 'block';
+            }
+        }
+
+        // 2. Render Cards to Screen
+        function renderDistributors(data) {
+            const container = document.getElementById('results-area');
+            container.innerHTML = '';
+
+            if (data.length === 0) {
+                container.innerHTML = '<p style="text-align:center; width:100%;">No distributors found in this area.</p>';
+                return;
+            }
+
+            data.forEach(dist => {
+                const card = `
+                    <div class="card">
+                        <span class="badge">${dist.category}</span>
+                        <h3>${dist.name}</h3>
+                        <p>${dist.city}, ${dist.state}</p>
+                        <div class="rating">★ ${dist.rating}/5.0</div>
+                        <p style="font-size: 0.9em; color: #666;">Verified Distributor</p>
+                        
+                        <button class="call-btn" onclick="initiateMaskedCall('${dist.name}')">
+                            📞 Contact Distributor
+                        </button>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // 3. Search Functionality
+        function filterDistributors() {
+            const stateVal = document.getElementById('state-select').value;
+            const cityVal = document.getElementById('city-input').value.toLowerCase();
+
+            const filtered = distributors.filter(d => {
+                const matchState = stateVal === "" || d.state === stateVal;
+                const matchCity = cityVal === "" || d.city.toLowerCase().includes(cityVal);
+                return matchState && matchCity;
+            });
+
+            renderDistributors(filtered);
+        }
+
+        // 4. "Spoof" / Masked Call Simulation
+        function initiateMaskedCall(distributorName) {
+            // In a real app, this triggers an API call to Twilio/Plivo
+            alert(CONNECTING SECURE CALL...\n\nConnecting you to ${distributorName}.\n\nNote: Your personal number and the distributor's number are hidden. The system is bridging the call now via VoIP.);
+        }
+
+    </script>
+</body>
+</html>

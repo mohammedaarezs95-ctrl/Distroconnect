@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Business Registration Documents - Upload your documents" />
+  <title>Business Registration – Distro Connect</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #fff;
+      --accent: #0ea5e9;
+      --muted: #6b7280;
+    }
+
+    body {
+      background: var(--bg);
+      color: #0f172a;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 20px auto;
+      padding: 22px;
+    }
+
+    h1 {
+      margin: 0 0 6px 0;
+      font-size: 22px;
+      color: #0f172a;
+    }
+
+    .lead {
+      margin: 0 0 18px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      background: #fbfdff;
+      border: 1px solid #e6eef8;
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    select,
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #dbe7f5;
+      border-radius: 8px;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .file-input {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .file-label {
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #f1f9fe;
+      border: 1px dashed #bde8ff;
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .file-label:hover {
+      background: #e0f2fe;
+    }
+
+    .file-info {
+      font-size: 13px;
+      color: var(--muted);
+      flex: 1;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .btn-reset {
+      background: transparent;
+      border: 1px solid #e6eef8;
+      color: #333;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .btn-reset:hover {
+      background: #f6f8fb;
+    }
+
+    .btn-submit {
+      background: var(--accent);
+      color: white;
+      padding: 10px 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-submit:hover {
+      background: #0284c7;
+    }
+
+    .note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .error {
+      color: #b91c1c;
+      font-size: 13px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    #notice {
+      margin-bottom: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #bbf7d0;
+    }
+
+    @media (max-width: 720px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        justify-content: stretch;
+      }
+
+      .actions button {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main role="main">
+    <h1>Business Registration — Documents</h1>
+    <p class="lead">Upload your business registration details and supporting documents. All files accepted: PDF, PNG, JPG (max 10MB each).</p>
+
+    <form id="bizForm" class="form-grid" novalidate>
+      <div class="field full">
+        <label for="registrationType">Business registration</label>
+        <select id="registrationType" required aria-required="true">
+          <option value="">Select registration type</option>
+          <option value="proprietorship">Proprietorship</option>
+          <option value="llp">LLP</option>
+          <option value="pvt_ltd">Pvt Ltd</option>
+        </select>
+        <div id="regError" class="error"></div>
+      </div>
+
+      <div>
+        <label for="gst">GST number</label>
+        <input
+          id="gst"
+          type="text"
+          placeholder="22AAAAA0000A1Z5"
+          maxlength="15"
+          aria-describedby="gstHelp"
+        />
+        <div id="gstHelp" class="note">GSTIN is 15 characters (state code + PAN + entity code + Z + checksum).</div>
+        <div id="gstError" class="error"></div>
+      </div>
+
+      <div>
+        <label for="tradeLicense">Trade license (upload)</label>
+        <div class="file-input">
+          <label for="tradeLicense" class="file-label">Choose file</label>
+          <div id="tradeLicenseName" class="file-info">No file chosen</div>
+        </div>
+        <input id="tradeLicense" type="file" accept="application/pdf,image/*" style="display: none" />
+        <div id="tradeError" class="error"></div>
+      </div>
+
+      <div class="full">
+        <label for="addressProof">Warehouse / Office address proof (upload)</label>
+        <div class="file-input">
+          <label for="addressProof" class="file-label">Choose file</label>
+          <div id="addressProofName" class="file-info">No file chosen</div>
+        </div>
+        <input id="addressProof" type="file" accept="application/pdf,image/*" style="display: none" />
+        <div id="addrError" class="error"></div>
+      </div>
+
+      <div class="full note">By submitting you confirm that the documents provided are accurate and you have authority to share them.</div>
+
+      <div class="full actions">
+        <button type="button" class="btn-reset" id="resetBtn">Reset</button>
+        <button type="submit" class="btn-submit">Submit</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="assets/js/utils.js"></script>
+  <script>
+    const form = document.getElementById("bizForm");
+    const regType = document.getElementById("registrationType");
+    const gst = document.getElementById("gst");
+    const tradeInput = document.getElementById("tradeLicense");
+    const addrInput = document.getElementById("addressProof");
+    const tradeName = document.getElementById("tradeLicenseName");
+    const addrName = document.getElementById("addressProofName");
+
+    const regError = document.getElementById("regError");
+    const gstError = document.getElementById("gstError");
+    const tradeError = document.getElementById("tradeError");
+    const addrError = document.getElementById("addrError");
+
+    // Clickable labels for file inputs
+    document.querySelectorAll(".file-label").forEach((lbl) => {
+      lbl.addEventListener("click", (e) => {
+        e.preventDefault();
+        const forId = lbl.getAttribute("for");
+        document.getElementById(forId).click();
+      });
+    });
+
+    tradeInput.addEventListener("change", () => {
+      tradeName.textContent = tradeInput.files.length ? tradeInput.files[0].name : "No file chosen";
+      Utils.clearError("tradeError");
+    });
+
+    addrInput.addEventListener("change", () => {
+      addrName.textContent = addrInput.files.length ? addrInput.files[0].name : "No file chosen";
+      Utils.clearError("addrError");
+    });
+
+    function clearErrors() {
+      [regError, gstError, tradeError, addrError].forEach((e) => {
+        e.style.display = "none";
+        e.textContent = "";
+      });
+    }
+
+    function validateFiles(fileInput) {
+      if (!fileInput.files || fileInput.files.length === 0) return false;
+      const file = fileInput.files[0];
+      const maxMB = 10;
+      if (file.size > maxMB * 1024 * 1024) {
+        return "File too large (max " + maxMB + "MB)";
+      }
+      return true;
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      clearErrors();
+      let ok = true;
+
+      if (!regType.value) {
+        Utils.showError("regError", "Please select your business registration type.");
+        ok = false;
+      }
+
+      if (!Utils.isValidGST(gst.value)) {
+        Utils.showError("gstError", "GST number looks invalid. Please check format (15 chars).");
+        ok = false;
+      }
+
+      const tradeCheck = validateFiles(tradeInput);
+      if (tradeCheck !== true) {
+        Utils.showError("tradeError", tradeCheck || "Please upload trade license.");
+        ok = false;
+      }
+
+      const addrCheck = validateFiles(addrInput);
+      if (addrCheck !== true) {
+        Utils.showError("addrError", addrCheck || "Please upload address proof.");
+        ok = false;
+      }
+
+      if (!ok) return;
+
+      const payload = {
+        registrationType: regType.value,
+        gst: gst.value.trim() || null,
+        tradeLicenseName: tradeInput.files[0].name,
+        addressProofName: addrInput.files[0].name,
+      };
+
+      Utils.storeData("businessDocs", payload);
+
+      form.insertAdjacentHTML(
+        "beforebegin",
+        '<div id="notice">✓ Submitted — ' + payload.tradeLicenseName + " & " + payload.addressProofName + "</div>"
+      );
+
+      form.reset();
+      tradeName.textContent = "No file chosen";
+      addrName.textContent = "No file chosen";
+
+      setTimeout(() => {
+        Utils.navigate("waitpage.html");
+      }, 2000);
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      form.reset();
+      clearErrors();
+      tradeName.textContent = "No file chosen";
+      addrName.textContent = "No file chosen";
+    });
+  </script>
+</body>
+</html>

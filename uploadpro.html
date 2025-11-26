@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Upload Your Product</title>
+  <style>
+    body{
+      margin:0;
+      font-family:Inter, Arial, sans-serif;
+      background:#f4f7fb;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:20px;
+    }
+    .card{
+      background:white;
+      width:100%;
+      max-width:550px;
+      padding:28px;
+      border-radius:14px;
+      box-shadow:0 6px 25px rgba(0,0,0,0.1);
+    }
+    h2{
+      text-align:center;
+      margin:0 0 20px;
+      font-size:22px;
+      color:#0f172a;
+    }
+    label{
+      display:block;
+      font-weight:600;
+      margin-bottom:6px;
+      color:#334155;
+    }
+    input, textarea, select{
+      width:100%;
+      padding:12px;
+      border:1px solid #d3dbe5;
+      border-radius:8px;
+      font-size:14px;
+      margin-bottom:18px;
+      outline:none;
+    }
+    textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+    input[type="file"]{
+      padding:8px;
+      background:#f8fafc;
+    }
+    .btn{
+      width:100%;
+      padding:12px;
+      background:#2563eb;
+      color:white;
+      border:none;
+      border-radius:8px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .btn:hover{
+      background:#1e4fcc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Upload Your Product</h2>
+
+    <form>
+
+      <label for="pictures">Product Pictures</label>
+      <input id="pictures" type="file" accept="image/*" multiple />
+
+      <label for="desc">Product Description</label>
+      <textarea id="desc" placeholder="Describe your product"></textarea>
+
+      <label for="category">Product Category</label>
+      <select id="category">
+        <option value="">Select category</option>
+        <option>Clothing</option>
+        <option>Electronics</option>
+        <option>Accessories</option>
+        <option>Home & Decor</option>
+        <option>Beauty</option>
+      </select>
+
+      <button class="btn" type="button" onclick="window.location.href='documentsbrand.html'">Submit Product</button>
+
+    </form>
+  </div>
+
+</body>
+</html>
