@@ -7,6 +7,7 @@
     "start": "npx http-server -p 8000",
     "dev": "npx http-server -p 8000 -c-1",
     "build": "echo 'Frontend application - no build step required'",
+    "vercel-build": "echo 'no build required'",
     "lint": "echo 'Add ESLint configuration for linting'",
     "test": "echo 'Add your test framework here'"
   },
@@ -22,7 +23,7 @@
     "http-server": "^14.1.1"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": "18.x"
   },
   "repository": {
     "type": "git",
